@@ -4,10 +4,6 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const movies = require("./data");
 
-
-
-
-
 const app = express();
 const exphbs = require('express-handlebars');
 
