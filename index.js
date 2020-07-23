@@ -15,19 +15,15 @@ app.set('view engine', 'handlebars');
 
 app.set('port', process.env.PORT || 3000);
 
-// Set location for static files
 app.use(express.static(__dirname + '/public'));
 
-// Parse form submissions
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Create variable to reference getter method from data.js
-const movies = movies.getAll();
+const showMovies = movies.getAll();
 
 // Route path for home page. renders home.handlebars in the response, along with dynamic content from the exported data getter method
 app.get('/', (req, res) => {
     res.type('text/html');
-const showMovies = movies.getAll();
     res.render('home', { movies: showMovies });
 });
 
