@@ -12,17 +12,13 @@ exports.getAll = function getAll() {
 }
 
 
-exports.getmovies = (title) => {
-   return movies.find((movies) => {
-      return movies.title === title;
-   });
-}
+
 // getItem - should return full data about the requested item
 
-exports.getItem = title => {
+exports.getDetail = title => {
    const movie = movies.find(movies => movies.title === title);
    if (movie === undefined) {
-      return { "item": false, "msg": `"${title}" can not be found` }
+      return { "details": false, "msg": `"${title}" can not be found` }
    } else {
       return movie;
    }
@@ -31,7 +27,7 @@ exports.getItem = title => {
 // Adding a Movie Object to movies 
 
 exports.addMovie = (title, year, actors, profit) => {
-   if ([title, dir, year, rating].includes(undefined)) {
+   if ([title, year, actors, profit].includes(undefined)) {
       return { "added": false, "msg": "incomplete info" };
    } else {
       const newMovie = {
@@ -52,7 +48,7 @@ exports.delMovie = title => {
    if (delMovie === -1) {
       return { "deleted": false, "msg": `"${title}" doesn't exist` }
    } else {
-      movies.splice(delMovie, 1);
+      movies.splice(delMovie,1);
       return { "deleted": true, "msg": `"${title}" removed` }
    }
 };
