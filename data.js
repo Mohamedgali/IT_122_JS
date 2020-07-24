@@ -6,15 +6,11 @@ const movies = [
    { title: 'There Will Be Blood', year: 2007, actors: 'Daniel Day-Lewis', profit: 5000 },
 ];
 
-
 exports.getAll = function getAll() {
    return movies;
 }
 
-
-
 // getItem - should return full data about the requested item
-
 exports.getDetail = title => {
    const movie = movies.find(movies => movies.title === title);
    if (movie === undefined) {
@@ -23,9 +19,7 @@ exports.getDetail = title => {
       return movie;
    }
 }
-
 // Adding a Movie Object to movies 
-
 exports.addMovie = (title, year, actors, profit) => {
    if ([title, year, actors, profit].includes(undefined)) {
       return { "added": false, "msg": "incomplete info" };
@@ -39,9 +33,7 @@ exports.addMovie = (title, year, actors, profit) => {
       movies.push(newMovie);
       return newMovie;
    }
-
 };
-
 // deleteItem - should delete the requested item
 exports.delMovie = title => {
    const delMovie = movies.findIndex(movies => movies.title === title);
