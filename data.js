@@ -15,7 +15,7 @@ exports.getAll = function getAll() {
 
 // getItem - should return full data about the requested item
 
-exports.getItem = title => {
+exports.getDetail = title => {
    const movie = movies.find(movies => movies.title === title);
    if (movie === undefined) {
       return { "details": false, "msg": `"${title}" can not be found` }
