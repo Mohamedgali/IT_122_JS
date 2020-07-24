@@ -7,13 +7,7 @@ h1 {
 h2 {
     margin-left: .5em;
     }
-p {
-    font-family: verdana;
-    text-align: left;
-    color: rgb(0, 255, 157);
-    font-size: 20px;
-    
-    }
+
 
 ul {
     
@@ -38,14 +32,9 @@ a:link {
 
 
 .stats {
-    font-size: 1.5em;
+    font-size: 1.2em;
     color: rgb(212, 124, 146);
     }
 
-.home {
-    margin: .5em;
-    padding-top: 2em;
-    font-size: 1.5em;
-    }
 
     
