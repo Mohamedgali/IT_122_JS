@@ -1,0 +1,29 @@
+{
+  "name": "it_122_js",
+  "version": "1.0.0",
+  "description": "Let's simplify your server application and add formatted pages, using Express and basic templating.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "devStart": "nodemon index.js "
+
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mohamedgali/IT_122_JS.git"
+  },
+  "author": "Mohamed Ali",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Mohamedgali/IT_122_JS/issues"
+  },
+  "homepage": "https://github.com/Mohamedgali/IT_122_JS#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "express-handlebars": "^5.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  }
+}
