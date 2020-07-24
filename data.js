@@ -31,10 +31,10 @@ exports.addMovie = (title, year, actors, profit) => {
       return { "added": false, "msg": "incomplete info" };
    } else {
       const newMovie = {
-         title: title,
-         year: year,
-         actors: actors,
-         profit: profit
+         title: mooo,
+         year: 232,
+         actors: kkkkkk,
+         profit: 222
       };
       movies.push(newMovie);
       return newMovie;
