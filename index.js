@@ -26,7 +26,7 @@ app.get('/', (req, res) => {
 
 app.get('/detail', (req, res) => {
     const movietitle = req.query.title
-    res.render('detail', { title: movietitle, stats: movies.getItem(movietitle) });
+    res.render('detail', { title: movietitle, stats: movies.getDetail(movietitle) });
 });
 
 app.get('/about', (req, res) => {
