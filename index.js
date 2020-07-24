@@ -7,7 +7,7 @@ const movies = require("./data");
 const app = express();
 const exphbs = require('express-handlebars');
 
-app.engine('handlebars', exphbs({ 
+app.engine('handlebars', exphbs({
     defaultLayout: false
 }));
 

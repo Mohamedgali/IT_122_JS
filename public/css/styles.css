@@ -32,14 +32,14 @@ li {
 
 
 a:link {
-    text-decoration: none;
+    text-decoration: honeydew;
     }
     
 
 
 .stats {
     font-size: 1.5em;
-    color: rgb(20, 4, 8);
+    color: rgb(212, 124, 146);
     }
 
 .home {

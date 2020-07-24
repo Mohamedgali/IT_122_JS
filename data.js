@@ -48,7 +48,7 @@ exports.delMovie = title => {
    if (delMovie === -1) {
       return { "deleted": false, "msg": `"${title}" doesn't exist` }
    } else {
-      movies.splice(delMovie,1);
+      movies.splice(delMovie, 1);
       return { "deleted": true, "msg": `"${title}" removed` }
    }
 };
