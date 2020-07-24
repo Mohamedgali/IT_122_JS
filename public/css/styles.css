@@ -35,21 +35,11 @@ a:link {
     text-decoration: none;
     }
     
-a:visited {
-    text-decoration: none;
-    }
-    
-a:hover {
-    text-decoration: underline;
-    }
-    
-a:active {
-    text-decoration: underline;
-    }
 
-/* Details page specific styles */
+
 .stats {
-    font-size: 1.5em;
+    font-size: 2em;
+    color: rgb(219, 17, 67);
     }
 
 .home {
