@@ -12,11 +12,9 @@ app.engine('handlebars', exphbs({
 }));
 
 app.set('view engine', 'handlebars');
-
 app.set('port', process.env.PORT || 3000);
 
 app.use(express.static(__dirname + '/public'));
-
 app.use(bodyParser.urlencoded({ extended: true }));
 
 const showMovies = movies.getAll();
