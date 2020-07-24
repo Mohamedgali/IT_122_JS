@@ -35,8 +35,4 @@ describe("Movie module", () => {
         movies.delMovie("There will be Blood");
         expect(movies.getDetail("There will be Blood").msg).to.deep.equal('"There will be Blood" not found');
     })
-
-
-
-
 });
