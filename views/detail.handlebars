@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>My Favorite Movies - {{title}}</title>
+  <link rel="stylesheet" type="text/css" href="../css/styles.css" />
+</head>
+
+<body>
+  <h1>Hello to Films of Mohammed!</h1>
+
+  <h2>Information about {{title}}:</h2>
+
+
+  <ul>
+    {{#with stats}}
+    <li class="stats">The year of film making: {{year}}
+    <li class="stats">Actor in the film: {{actors}}
+    <li class="stats">The movie made a profit of: {{profit}}
+      {{/with}}
+  </ul>
+
+  <p class="home"><a href="../">Back to your homepage</a></p>

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" /> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>My Favorite Movies</title>
+    <link rel="stylesheet" type="text/css" href="./css/styles.css" />
+  </head>
+  <body>
+   <h1>Hello to Films of Mohammed!</h1> 
+   <h2>Choose a movie you want to know more:</h2>
+   
+   
+    <ul>
+        {{#each movies}}
+            <li><a href= "/detail?title={{title}}">{{title}}</a></li>
+        {{/each}}
+    </ul>
+  </body>
+</html>  
