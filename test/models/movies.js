@@ -2,12 +2,14 @@
 //const credentials = require("../lib/credentials");
 
 // require mongoose ODM library
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
+
+const connectionString = "mongodb+srv://ghost101:ghost101@cluster0.8hir6.mongodb.net/sccprojects?retryWrites=true&w=majority";
 
 //connect to db via the credentials info
 //mongoose.connect(credentials.connectionString, { dbName: "sccprojectdb", useNewUrlParser: true, useUnifiedTopology: true });
 
-const connectionString = "mongodb+srv:ghost101:ghost101@cluster0.8hir6.mongodb.net/sccprojects?retryWrites=true&w=majority";
+
 
 
 // when mongoose connects to mongodb, display confirmation in console
