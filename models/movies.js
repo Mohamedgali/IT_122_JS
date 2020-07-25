@@ -7,7 +7,7 @@ mongoose.connection.on('open', () => {
     console.log('Mongoose connected.')
 });
 
-const mySchema = mongoose.Schema({
+const movieSchema = new mongoose.Schema({
     title: { type: String, required: true },
     year: Number,
     actors: String,
@@ -15,7 +15,7 @@ const mySchema = mongoose.Schema({
 
 });
 
-module.exports = mongoose.model('Movie', mySchema);
+module.exports = mongoose.model('Movie', movieSchema);
 
 
 
