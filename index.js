@@ -2,7 +2,7 @@
 
 const express = require('express');
 const bodyParser = require('body-parser');
-const movies = require("./data");
+const movies = require("./models/movies");
 
 const app = express();
 const exphbs = require('express-handlebars');
@@ -17,17 +17,39 @@ app.set('port', process.env.PORT || 3000);
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.urlencoded({ extended: true }));
 
-const showMovies = movies.getAll();
 
-app.get('/', (req, res) => {
-    res.type('text/html');
-    res.render('home', { movies: showMovies });
+app.get('/', (req, res, next) => {
+    return movies.find({}).lean()
+        .then((movies) => {
+            res.render('home', { movies });
+        })
+        .catch(err => next(err));
 });
 
 app.get('/detail', (req, res) => {
-    const movietitle = req.query.title
-    res.render('detail', { title: movietitle, stats: movies.getDetail(movietitle) });
+    const movietitle = req.query.title;
+    movies.findOne({title: movietitle}).lean()
+    .then((movies) => {
+        res.render('detail', {title: movietitle, stats: movies});
+    });
 });
+
+app.get('/delete', (req, res) => {
+    const movietitle = req.query.title;
+    movies.findOneAndDelete({title: movietitle}, (err, movie) => {
+        //console.log(movie);
+        if (err) {
+            console.log(err);
+        } else if (!movie) {
+            console.log(movietitle + " not found");
+            res.send(`${movietitle} not found`);
+        } else if (movie) {
+            console.log(movietitle + " delete successful");
+            res.send(`${movietitle} delete successful`);
+        }
+    });
+});
+
 
 app.get('/about', (req, res) => {
     res.type('text/plain');
