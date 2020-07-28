@@ -20,8 +20,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/', (req, res, next) => {
     return movies.find({}).lean()
-        .then((movies) => {
-            res.render('home', { movies });
+        .then((movie) => {
+            res.render('home', { movie });
         })
         .catch(err => next(err));
 })
@@ -29,8 +29,8 @@ app.get('/', (req, res, next) => {
 app.get('/detail', (req, res) => {
     const movietitle = req.query.title;
     movies.findOne({title: movietitle}).lean()
-    .then((movies) => {
-        res.render('detail', {title: movietitle, stats: movies});
+    .then((movie) => {
+        res.render('detail', {title: movietitle, stats: movie});
     });
 });
 
