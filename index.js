@@ -28,16 +28,15 @@ app.get('/', (req, res, next) => {
 
 app.get('/detail', (req, res) => {
     const movietitle = req.query.title;
-    movies.findOne({title: movietitle}).lean()
-    .then((movies) => {
-        res.render('detail', {title: movietitle, stats: movies});
-    });
+    movies.findOne({ title: movietitle }).lean()
+        .then((movies) => {
+            res.render('detail', { title: movietitle, stats: movies });
+        });
 });
 
 app.get('/delete', (req, res) => {
     const movietitle = req.query.title;
-    movies.findOneAndDelete({title: movietitle}, (err, movie) => {
-        //console.log(movie);
+    movies.findOneAndDelete({ title: movietitle }, (err, movie) => {
         if (err) {
             console.log(err);
         } else if (!movie) {
@@ -50,10 +49,9 @@ app.get('/delete', (req, res) => {
     });
 });
 
-
 app.get('/about', (req, res) => {
     res.type('text/plain');
-    res.send('About page\n My name is Mohamed and I am pursuing programming degree.');
+    res.send('About page\n My name is Mohamed Ali and I am pursuing programming degree.');
 });
 
 app.use((req, res) => {
