@@ -9,37 +9,37 @@ const movies = [
 exports.getAll = () => {
    return movies;
 
-// getItem - should return full data about the requested item
-exports.getDetail = title => {
-   const movie = movies.find(movies => movies.title === title);
-   if (movie === undefined) {
-      return { "details": false, "msg": `"${title}" can not be found` }
-   } else {
-      return movie;
+   // getItem - should return full data about the requested item
+   exports.getDetail = title => {
+      const movie = movies.find(movies => movies.title === title);
+      if (movie === undefined) {
+         return { "details": false, "msg": `"${title}" can not be found` }
+      } else {
+         return movie;
+      }
    }
-}
-// Adding a Movie Object to movies 
-exports.addMovie = (title, year, actors, profit) => {
-   if ([title, year, actors, profit].includes(undefined)) {
-      return { "added": false, "msg": "incomplete info" };
-   } else {
-      const newMovie = {
-         title: title,
-         year: year,
-         actors: actors,
-         profit: profit
-      };
-      movies.push(newMovie);
-      return newMovie;
-   }
-};
-// deleteItem - should delete the requested item
-exports.delMovie = title => {
-   const delMovie = movies.findIndex(movies => movies.title === title);
-   if (delMovie === -1) {
-      return { "deleted": false, "msg": `"${title}" doesn't exist` }
-   } else {
-      movies.splice(delMovie, 1);
-      return { "deleted": true, "msg": `"${title}" removed` }
-   }
-};
+   // Adding a Movie Object to movies 
+   exports.addMovie = (title, year, actors, profit) => {
+      if ([title, year, actors, profit].includes(undefined)) {
+         return { "added": false, "msg": "incomplete info" };
+      } else {
+         const newMovie = {
+            title: title,
+            year: year,
+            actors: actors,
+            profit: profit
+         };
+         movies.push(newMovie);
+         return newMovie;
+      }
+   };
+   // deleteItem - should delete the requested item
+   exports.delMovie = title => {
+      const delMovie = movies.findIndex(movies => movies.title === title);
+      if (delMovie === -1) {
+         return { "deleted": false, "msg": `"${title}" doesn't exist` }
+      } else {
+         movies.splice(delMovie, 1);
+         return { "deleted": true, "msg": `"${title}" removed` }
+      }
+   };
