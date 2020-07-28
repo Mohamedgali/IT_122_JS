@@ -20,8 +20,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/', (req, res, next) => {
     return movies.find({}).lean()
-        .then((movie) => {
-            res.render('home', { movie });
+        .then((movies) => {
+            res.render('home', { movies });
         })
         .catch(err => next(err));
 })
