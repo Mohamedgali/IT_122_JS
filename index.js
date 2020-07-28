@@ -29,8 +29,8 @@ app.get('/', (req, res, next) => {
 app.get('/detail', (req, res) => {
     const movietitle = req.query.title;
     movies.findOne({title: movietitle}).lean()
-    .then((movie) => {
-        res.render('detail', {title: movietitle, stats: movie});
+    .then((movies) => {
+        res.render('detail', {title: movietitle, stats: movies});
     });
 });
 
