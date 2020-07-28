@@ -6,9 +6,10 @@ const movies = [
    { title: 'There Will Be Blood', year: 2007, actors: 'Daniel Day-Lewis', profit: 5000 },
 ];
 
-exports.getAll = function getAll() {
+exports.getAll = () => {
    return movies;
 }
+
 
 // getItem - should return full data about the requested item
 exports.getDetail = title => {
