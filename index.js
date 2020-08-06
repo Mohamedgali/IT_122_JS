@@ -17,6 +17,64 @@ app.set('port', process.env.PORT || 3000);
 
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
+app.use('/api', require('cors')());
+
+
+// ALL GET-API
+
+app.get('/api/movies', (req, res) => {
+    return movies.find({})
+        .then((movies) => {
+            res.json(movies)
+        })
+        .catch(err => {
+            res.status(500).send('Error occurred: dabatase error')
+        })
+})
+
+app.get('/api/movies/:title', (req, res) => {
+    const movietitle = req.params.title;
+    movies.findOne({ title: movietitle })
+        .then((movie) => {
+            if (movie === null) {
+                return res.status(400).send(`Error: "${movietitle}" not found`)
+            } else {
+                res.json(movie)
+            }
+        })
+        .catch(err => {
+            res.status(500).send('Error occurred: dabatase error', err)
+        })
+})
+
+app.delete('/api/movies/:title', (req, res) => {
+    const movietitle = req.params.title;
+    movies.findOneAndDelete({ title: movietitle })
+        .then(movie => {
+            if (movie === null) {
+                return res.status(400).send(`Error: "${movietitle}" not found`)
+            } else {
+                res.json(movie)
+            }
+        })
+
+        .catch(err => {
+            res.status(500).send('Error occurred: dabatase error', err)
+        })
+})
+
+app.post('/api/movies/:title', (req, res) => {
+    const movietitle = req.params.title;
+    movies.findOneAndUpdate({ title: movietitle }, req.body, { upsert: true, new: true })
+        .then(movie => {
+            res.json(movie)
+        })
+        .catch(err => {
+            res.status(500).send('Error occurred: dabatase error', err)
+        })
+})
 
 
 app.get('/', (req, res, next) => {
@@ -26,6 +84,7 @@ app.get('/', (req, res, next) => {
         })
         .catch(err => next(err));
 });
+
 
 app.get('/detail', (req, res) => {
     const movietitle = req.query.title;
@@ -50,11 +109,14 @@ app.get('/delete', (req, res) => {
     });
 });
 
+
+// Send plain text response
 app.get('/about', (req, res) => {
     res.type('text/plain');
     res.send('About page\n My name is Mohamed Ali and I am pursuing programming degree.');
 });
 
+// Define 404 handler
 app.use((req, res) => {
     res.type('text/plain');
     res.status(404);
