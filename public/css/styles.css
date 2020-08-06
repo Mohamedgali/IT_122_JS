@@ -1,6 +1,5 @@
-
 h1 {
-    color: rgb(128, 18, 18);
+    margin: 0 auto;
     text-align: center;
     }
 
@@ -8,39 +7,40 @@ h2 {
     margin-left: .5em;
     }
 
-
-    ul {
-        background: #33e7ff;
-        padding: 20px;
-    
-    }
-    ul li {
-        background: #cce5ff;
-        margin: 5px;
-      }
-
 li {
-    
-    background: #cce5ff;
-    margin: 5px;
-      
+    font-size: 2em;
+    width: 300px;
+    margin: .5em;
+    padding: .25em .5em;
+    list-style: none;
+    border: 1px solid black;
+    border-radius: 20px;
+    background-color: azure;
     }
-
 
 a:link {
-    text-decoration: black;
-    font-size: large;
-    font-variant: normal;
+    text-decoration: none;
     }
     
-
-
-.stats {
-    font-size: 1.2em;
-    color: rgb(27, 4, 10);
+a:visited {
+    text-decoration: none;
+    }
+    
+a:hover {
+    text-decoration: underline;
+    }
+    
+a:active {
+    text-decoration: underline;
     }
 
+/* Details page specific styles */
+.stats {
+    font-size: 1.5em;
+    }
 
-
-
-        
+.home {
+    margin: .5em;
+    padding-top: 2em;
+    font-size: 1.5em;
+    }
