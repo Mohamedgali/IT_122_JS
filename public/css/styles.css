@@ -8,14 +8,14 @@ h2 {
     }
 
 li {
-    font-size: 2em;
+    font-size: 1.5em;
     width: 300px;
     margin: .5em;
     padding: .25em .5em;
     list-style: none;
-    border: 1px solid black;
+    border: 1px solid rgb(118, 109, 235);
     border-radius: 20px;
-    background-color: azure;
+    background-color: rgb(194, 147, 47);
     }
 
 a:link {
@@ -34,7 +34,6 @@ a:active {
     text-decoration: underline;
     }
 
-/* Details page specific styles */
 .stats {
     font-size: 1.5em;
     }
