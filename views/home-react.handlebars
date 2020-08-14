@@ -1,0 +1,100 @@
+<html>
+<head>
+    <title>React App Demo</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <!-- Don't use this in production: -->
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+      <link rel="stylesheet" type="text/css" href="./css/styles.css" />
+
+    <title>Mohamed's Movies</title>
+</head>
+
+<body>
+
+<div id="root"></div>
+<script type="text/babel">
+
+// Movie Component
+    
+    const Movie = props => {  
+        return (
+            <div>
+                <ul>
+                {props.movieArray.map((movie) => (
+                    <li key={movie._id}><a href="#" onClick={props.selected}>{movie.title}</a></li>
+                ))}
+                </ul>   
+            </div>
+        ); 
+    };
+// MovieDetails Component
+    
+    const MovieDetails = props => {
+        return (
+            <div>
+                <h2>{props.current.title}</h2>               
+                <ul>
+                    <li className="stats">The year of film making: {props.current.year}</li>
+                    <li className="stats">Actor in the film: {props.current.actors}</li>
+                    <li className="stats">The movie made a profit of: {props.current.profit}</li>
+                </ul>
+                
+                <p className="home"><a href="#" onClick={props.reset} >Back to your homepage</a></p>
+            </div>
+        )
+    }
+    class App extends React.Component{
+      constructor(props){
+          super(props);
+          // Set initial state using data from server application
+          this.state = {
+            movie: {{{ movies }}}, //provided from index.js for '/' path. 
+            currentMovie: { } // current selected item
+          };
+          // bind application state to click handler
+          this.selectItem = this.selectItem.bind(this);
+       }
+      
+      // Handle list item clicked
+        
+      selectItem(event) {
+        event.preventDefault();
+        const movie = this.state.movie.find(movie => event.target.text === movie.title);
+        this.setState({currentMovie: movie});
+        
+        
+        
+      }
+    
+    // Reset currentMovie
+     
+      resetCurrent() {
+          this.setState({currentMovie: { } })
+      }
+      render() {
+        // render app UI elements
+
+        if (Object.entries(this.state.currentMovie).length !== 0 ) {
+            return (
+            <div>
+                <h1>Hello to Films of Mohammed!</h1>
+                <MovieDetails current={this.state.currentMovie} reset={() => this.resetCurrent()} />
+            </div>
+            );
+        } else {
+        return (
+        
+          <div>
+            <h1>Hello to Films of Mohammed!</h1> 
+            <h2>Choose a movie you want to know more:</h2>
+            <Movie movieArray={this.state.movie} selected={event => this.selectItem(event)}/>
+          </div>
+          );
+      }}
+    }
+    ReactDOM.render(<App />, document.getElementById('root'));
+    
+</script>
+</body>
+</html>

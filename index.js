@@ -22,6 +22,7 @@ app.use(bodyParser.json());
 app.use('/api', require('cors')());
 
 
+
 // ALL GET-API
 
 app.get('/api/movies', (req, res) => {
@@ -51,6 +52,7 @@ app.get('/api/movies/:title', (req, res) => {
 
 app.delete('/api/movies/:title', (req, res) => {
     const movietitle = req.params.title;
+    //res.json(movietitle);
     movies.findOneAndDelete({ title: movietitle })
         .then(movie => {
             if (movie === null) {
@@ -76,14 +78,34 @@ app.post('/api/movies/:title', (req, res) => {
         })
 })
 
+app.post('/api/movies', (req, res) => {
+    const movietitle = req.params.title;
+    movies.findOneAndUpdate({ title: movietitle }, req.body, { upsert: true, new: true })
+        .then(movie => {
+            res.json(movie)
+        })
+        .catch(err => {
+            res.status(500).send('Error occurred: dabatase error', err)
+        })
+})
 
+
+// React
 app.get('/', (req, res, next) => {
+    return movies.find({}).lean()
+        .then((movies) => {
+            res.render('home-react', {movies: JSON.stringify(movies)});
+        })
+        .catch(err => next(err));
+})
+
+/*app.get('/', (req, res, next) => {
     return movies.find({}).lean()
         .then((movies) => {
             res.render('home', { movies });
         })
         .catch(err => next(err));
-});
+});*/
 
 
 app.get('/detail', (req, res) => {
