@@ -1,100 +1,161 @@
 <html>
+
 <head>
     <title>React App Demo</title>
     <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
     <!-- Don't use this in production: -->
     <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
-      <link rel="stylesheet" type="text/css" href="./css/styles.css" />
 
     <title>Mohamed's Movies</title>
 </head>
 
 <body>
 
-<div id="root"></div>
-<script type="text/babel">
+    <div id="root"></div>
+    <script type="text/babel">
 
-// Movie Component
-    
-    const Movie = props => {  
-        return (
-            <div>
-                <ul>
-                {props.movieArray.map((movie) => (
-                    <li key={movie._id}><a href="#" onClick={props.selected}>{movie.title}</a></li>
-                ))}
-                </ul>   
-            </div>
-        ); 
-    };
-// MovieDetails Component
-    
-    const MovieDetails = props => {
-        return (
-            <div>
-                <h2>{props.current.title}</h2>               
-                <ul>
-                    <li className="stats">The year of film making: {props.current.year}</li>
-                    <li className="stats">Actor in the film: {props.current.actors}</li>
-                    <li className="stats">The movie made a profit of: {props.current.profit}</li>
-                </ul>
-                
-                <p className="home"><a href="#" onClick={props.reset} >Back to your homepage</a></p>
-            </div>
-        )
-    }
-    class App extends React.Component{
-      constructor(props){
-          super(props);
-          // Set initial state using data from server application
-          this.state = {
-            movie: {{{ movies }}}, //provided from index.js for '/' path. 
-            currentMovie: { } // current selected item
-          };
-          // bind application state to click handler
-          this.selectItem = this.selectItem.bind(this);
-       }
-      
-      // Handle list item clicked
-        
-      selectItem(event) {
-        event.preventDefault();
-        const movie = this.state.movie.find(movie => event.target.text === movie.title);
-        this.setState({currentMovie: movie});
-        
-        
-        
-      }
-    
-    // Reset currentMovie
-     
-      resetCurrent() {
-          this.setState({currentMovie: { } })
-      }
-      render() {
-        // render app UI elements
-
-        if (Object.entries(this.state.currentMovie).length !== 0 ) {
+        // Movie Component
+        const Movie = props => {
             return (
-            <div>
-                <h1>Hello to Films of Mohammed!</h1>
-                <MovieDetails current={this.state.currentMovie} reset={() => this.resetCurrent()} />
-            </div>
+                <div className="mainlist">
+                    <h2>Select a movie to learn more:</h2>               
+                     <ul>
+                        {props.movieArray.map((movie) => (
+                            <li key={movie._id}><a href="#" onClick={props.selected}>{movie.title}</a></li>
+                        ))}
+                    </ul>
+                </div>
             );
-        } else {
-        return (
+        };
+        // MovieDetails Component
+
+        const MovieDetails = props => {
+            return (
+                <div className="sidebar">
+                    <h2>Details for {props.current.title || "selected movie:"}</h2>
+                    
+                    <form>
+                    Title: <input onChange={props.edit} type="text" name="title" value={props.current.title || ""} /><br />
+                    Year:  <input onChange={props.edit} type="text" name="year" value={props.current.year || ""} /><br />
+                    Actor: <input onChange={props.edit} type="text" name="actors" value={props.current.actors || ""} /><br />
+                    Profit: <input onChange={props.edit} type="text" name="profit" value={props.current.profit || ""} />
+                    </form>
+                    <button onClick={props.reset}>Clear Fields</button>
+                    <button onClick={props.delete}>Delete Movie</button>
+                    <button onClick={props.save}>Save Entry</button>
+                    <div id="status"></div>
+                </div>
+            )
+        }
         
-          <div>
-            <h1>Hello to Films of Mohammed!</h1> 
-            <h2>Choose a movie you want to know more:</h2>
-            <Movie movieArray={this.state.movie} selected={event => this.selectItem(event)}/>
-          </div>
-          );
-      }}
+        class App extends React.Component {
+            constructor(props) {
+                super(props);
+                this.state = {
+                    movie: {{{ movies }}},
+                    currentMovie: { }
+        };
+
+        // bind application state to click handler
+        this.selectItem = this.selectItem.bind(this);
+        this.resetCurrent = this.resetCurrent.bind(this);
+        this.handleEdit = this.handleEdit.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
+        this.handleSave = this.handleSave.bind(this);       
+            }
+          
+
+        // Handle list item clicked
+        
+        selectItem(event) {
+            event.preventDefault();
+            const movie = this.state.movie.find(movie => event.target.text === movie.title);
+            this.setState({ currentMovie: movie });
+            ReactDOM.render(<h2></h2>, document.getElementById('status'));
+
+        }
+
+
+        handleEdit(event) {
+            console.log(event.target.name)
+            console.log(event.target.value)
+            let newMovie = this.state.currentMovie;
+            newMovie[event.target.name] = event.target.value;
+            this.setState({ currentMovie: newMovie });
+
+        }
+
+        // DELETE MOVIE FUNCTION
+        handleDelete() {
+            console.log('delete me');
+            fetch(`/api/movies/delete/${this.state.currentMovie.title}`)
+                .then((response) => {
+                    console.log(response);
+                    return response.json();
+                })
+                .then((result) => {
+
+                    this.setState({ movie: [...this.state.movie.filter(movie => movie.title !== this.state.currentMovie.title)] });
+
+                    ReactDOM.render(<h2 className="conf">"{this.state.currentMovie.title}" Deleted!</h2>, document.getElementById('status'));
+                    this.resetCurrent();
+                })
+                .catch(err => console.log(err))
+        }
+
+
+        // SAVE NEW MOVIE FUNCTION
+        handleSave(event) {
+            const newMov = this.state.currentMovie;
+            newMov[event.target.name] = event.target.value;
+            fetch(`/api/movies/${this.state.currentMovie}`, {
+                method: "POST",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(newMov)
+            })
+                .then((response) => response.json())
+                .then(result => {
+                    const newArrayOfMovies = this.state.movie.map(movie => {
+                        return movie;
+                    })
+                    newArrayOfMovies.push(result)
+                    this.setState({ movie: newArrayOfMovies })
+
+                    ReactDOM.render(<h2 className="conf">"{this.state.currentMovie.title}" Added!</h2>, document.getElementById('status'));
+                    this.resetCurrent();
+                })
+                .catch((err) => console.log(err))
+        }
+        
+        // Reset currentMovie
+
+        resetCurrent() {
+            this.setState({ currentMovie: {} })
+        }
+        render() {
+            return (
+
+                <div id="display" className="wrapper">
+                    <h1>Hello to Films of Mohammed!</h1>
+
+                    <Movie movieArray={this.state.movie} selected={event => this.selectItem(event)} />
+                    <MovieDetails
+                        current={this.state.currentMovie}
+                        reset={() => this.resetCurrent()}
+                        edit={this.handleEdit}
+                        delete={this.handleDelete}
+                        save={this.handleSave}
+                    />
+                </div>
+            );
+        }
     }
-    ReactDOM.render(<App />, document.getElementById('root'));
-    
-</script>
+
+
+        ReactDOM.render(<App />, document.getElementById('root'));
+
+    </script>
 </body>
+
 </html>

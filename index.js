@@ -23,6 +23,17 @@ app.use('/api', require('cors')());
 
 
 
+app.get('/', (req, res, next) => {
+    return movies.find({}).lean()
+        .then((movies) => {
+            res.render('home-react', {movies: JSON.stringify(movies)});
+        })
+        .catch(err => next(err));
+})
+
+
+
+
 // ALL GET-API
 
 app.get('/api/movies', (req, res) => {
@@ -34,6 +45,15 @@ app.get('/api/movies', (req, res) => {
             res.status(500).send('Error occurred: dabatase error')
         })
 })
+
+
+app.get('/detail', (req, res) => {
+    const movietitle = req.query.title;
+    movies.findOne({ title: movietitle }).lean()
+        .then((movies) => {
+            res.render('detail', { title: movietitle, stats: movies });
+        });
+});
 
 app.get('/api/movies/:title', (req, res) => {
     const movietitle = req.params.title;
@@ -50,71 +70,6 @@ app.get('/api/movies/:title', (req, res) => {
         })
 })
 
-app.delete('/api/movies/:title', (req, res) => {
-    const movietitle = req.params.title;
-    //res.json(movietitle);
-    movies.findOneAndDelete({ title: movietitle })
-        .then(movie => {
-            if (movie === null) {
-                return res.status(400).send(`Error: "${movietitle}" not found`)
-            } else {
-                res.json(movie)
-            }
-        })
-
-        .catch(err => {
-            res.status(500).send('Error occurred: dabatase error', err)
-        })
-})
-
-app.post('/api/movies/:title', (req, res) => {
-    const movietitle = req.params.title;
-    movies.findOneAndUpdate({ title: movietitle }, req.body, { upsert: true, new: true })
-        .then(movie => {
-            res.json(movie)
-        })
-        .catch(err => {
-            res.status(500).send('Error occurred: dabatase error', err)
-        })
-})
-
-app.post('/api/movies', (req, res) => {
-    const movietitle = req.params.title;
-    movies.findOneAndUpdate({ title: movietitle }, req.body, { upsert: true, new: true })
-        .then(movie => {
-            res.json(movie)
-        })
-        .catch(err => {
-            res.status(500).send('Error occurred: dabatase error', err)
-        })
-})
-
-
-// React
-app.get('/', (req, res, next) => {
-    return movies.find({}).lean()
-        .then((movies) => {
-            res.render('home-react', {movies: JSON.stringify(movies)});
-        })
-        .catch(err => next(err));
-})
-
-/*app.get('/', (req, res, next) => {
-    return movies.find({}).lean()
-        .then((movies) => {
-            res.render('home', { movies });
-        })
-        .catch(err => next(err));
-});*/
-
-
-app.get('/detail', (req, res) => {
-    const movietitle = req.query.title;
-    movies.findOne({ title: movietitle }).lean()
-        .then((movies) => {
-            res.render('detail', { title: movietitle, stats: movies });
-        });
-});
 
 app.get('/delete', (req, res) => {
     const movietitle = req.query.title;
@@ -130,6 +85,46 @@ app.get('/delete', (req, res) => {
         }
     });
 });
+
+app.get('/api/movies/delete/:title', (req, res) => {
+    const movietitle = req.params.title; 
+    movies.findOneAndDelete({title: movietitle})
+    .then(movie => {
+        if(movie === null) {
+            return res.status(400).send(`Error: "${movietitle}" not found`)   
+        } else {
+            res.json(movie)}
+    })
+
+    .catch(err => {
+        res.status(500).send('Error occurred: dabatase error', err)
+    })
+})
+
+
+
+
+app.post('/api/movies/:title', (req, res) => {
+    const movietitle = req.params.title;
+    movies.findOneAndUpdate({ title: movietitle }, req.body, { upsert: true, new: true })
+        .then(movie => {
+            res.json(movie)
+        })
+        .catch((err) => console.log(err))
+        
+})
+
+
+
+// React
+/*app.get('/', (req, res, next) => {
+    return movies.find({}).lean()
+        .then((movies) => {
+            res.render('home', { movies });
+        })
+        .catch(err => next(err));
+});*/
+
 
 
 // Send plain text response
