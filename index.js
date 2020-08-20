@@ -104,9 +104,13 @@ app.get('/api/movies/delete/:title', (req, res) => {
 
 
 
-app.post('/api/movies/:title', (req, res) => {
-    const movietitle = req.params.title;
-    movies.findOneAndUpdate({ title: movietitle }, req.body, { upsert: true, new: true })
+app.post('/api/movies/add', (req, res) => {
+    //const movietitle = req.params.title;
+    delete req.body["_id"];
+
+    //movies.findOneAndUpdate({ title: movietitle }, req.body, { upsert: true, new: true })
+    movies.updateOne({title: req.body.title}, req.body, {upsert: true, new: true})
+
         .then(movie => {
             res.json(movie)
         })

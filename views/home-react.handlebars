@@ -19,8 +19,8 @@
         const Movie = props => {
             return (
                 <div className="mainlist">
-                    <h2>Select a movie to learn more:</h2>               
-                     <ul>
+                    <h2>Select a movie to learn more:</h2>
+                    <ul>
                         {props.movieArray.map((movie) => (
                             <li key={movie._id}><a href="#" onClick={props.selected}>{movie.title}</a></li>
                         ))}
@@ -34,9 +34,9 @@
             return (
                 <div className="sidebar">
                     <h2>Details for {props.current.title || "selected movie:"}</h2>
-                    
+
                     <form>
-                    Title: <input onChange={props.edit} type="text" name="title" value={props.current.title || ""} /><br />
+                        Title: <input onChange={props.edit} type="text" name="title" value={props.current.title || ""} /><br />
                     Year:  <input onChange={props.edit} type="text" name="year" value={props.current.year || ""} /><br />
                     Actor: <input onChange={props.edit} type="text" name="actors" value={props.current.actors || ""} /><br />
                     Profit: <input onChange={props.edit} type="text" name="profit" value={props.current.profit || ""} />
@@ -48,13 +48,13 @@
                 </div>
             )
         }
-        
+
         class App extends React.Component {
             constructor(props) {
                 super(props);
                 this.state = {
                     movie: {{{ movies }}},
-                    currentMovie: { }
+                    currentMovie: {}
         };
 
         // bind application state to click handler
@@ -64,10 +64,10 @@
         this.handleDelete = this.handleDelete.bind(this);
         this.handleSave = this.handleSave.bind(this);       
             }
-          
+
 
         // Handle list item clicked
-        
+
         selectItem(event) {
             event.preventDefault();
             const movie = this.state.movie.find(movie => event.target.text === movie.title);
@@ -78,8 +78,8 @@
 
 
         handleEdit(event) {
-            console.log(event.target.name)
-            console.log(event.target.value)
+            // console.log(event.target.name)
+            // console.log(event.target.value)
             let newMovie = this.state.currentMovie;
             newMovie[event.target.name] = event.target.value;
             this.setState({ currentMovie: newMovie });
@@ -98,7 +98,7 @@
 
                     this.setState({ movie: [...this.state.movie.filter(movie => movie.title !== this.state.currentMovie.title)] });
 
-                    ReactDOM.render(<h2 className="conf">"{this.state.currentMovie.title}" Deleted!</h2>, document.getElementById('status'));
+                    ReactDOM.render(<h2 className="conf">"{this.state.currentMovie.title}" Movie is Deleted!</h2>, document.getElementById('status'));
                     this.resetCurrent();
                 })
                 .catch(err => console.log(err))
@@ -109,25 +109,30 @@
         handleSave(event) {
             const newMov = this.state.currentMovie;
             newMov[event.target.name] = event.target.value;
-            fetch(`/api/movies/${this.state.currentMovie}`, {
+            fetch(`/api/movies/add`, {
                 method: "POST",
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(newMov)
             })
                 .then((response) => response.json())
                 .then(result => {
-                    const newArrayOfMovies = this.state.movie.map(movie => {
-                        return movie;
-                    })
-                    newArrayOfMovies.push(result)
-                    this.setState({ movie: newArrayOfMovies })
+                    if (result.upserted) {
+                        const newMovie = this.state.currentMovie;
+                        newMovie._id = result.upserted._id;
+                        const newArrayOfMovies = this.state.movie.map(movie => {
 
-                    ReactDOM.render(<h2 className="conf">"{this.state.currentMovie.title}" Added!</h2>, document.getElementById('status'));
-                    this.resetCurrent();
-                })
+                            return movie;
+                        })
+                        newArrayOfMovies.push(newMovie)
+                        this.setState({ movie : newArrayOfMovies});
+                    }
+
+                        ReactDOM.render(<h2 className="conf">"{this.state.currentMovie.title}" New Movie is Added!</h2>, document.getElementById('status'));
+                        this.resetCurrent();
+                    })
                 .catch((err) => console.log(err))
         }
-        
+
         // Reset currentMovie
 
         resetCurrent() {
