@@ -73,7 +73,7 @@ app.get('/api/movies/:title', (req, res) => {
 
 app.get('/delete', (req, res) => {
     const movietitle = req.query.title;
-    movies.findOneAndDelete({ title: movietitle }, (err, movie) => {
+    movies.deleteOne({ title: movietitle }, (err, movie) => {
         if (err) {
             console.log(err);
         } else if (!movie) {
@@ -86,9 +86,9 @@ app.get('/delete', (req, res) => {
     });
 });
 
-app.get('/api/movies/delete/:title', (req, res) => {
+app.delete('/api/movies/delete/:title', (req, res) => {
     const movietitle = req.params.title; 
-    movies.findOneAndDelete({title: movietitle})
+    movies.deleteOne({title: movietitle})
     .then(movie => {
         if(movie === null) {
             return res.status(400).send(`Error: "${movietitle}" not found`)   
